@@ -1,0 +1,96 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+
+:root {
+  --white: rgb(246, 246, 246);
+  --darkPurple: rgb(135, 133, 162);
+  --peachyPink: rgb(255, 199, 199);
+  --pastelPink: rgb(255, 226, 226);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: var(--white);
+  font-family: "Roboto", sans-serif;
+}
+
+nav ul {
+  display: flex;
+  flex-direction: row;
+  background: var(--darkPurple);
+  padding: 1rem;
+}
+
+nav ul li {
+  list-style: none;
+  background: none;
+  padding: 0 1rem;
+}
+
+nav ul li a {
+  text-decoration: none;
+  background: none;
+  color: var(--white);
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
+h1 {
+  width: 600px;
+  background-color: var(--peachyPink);
+  font-size: 3rem;
+  padding: 1rem;
+  color: var(--darkPurple);
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+.list-container {
+  display: flex;
+  justify-content: center;
+}
+
+form {
+  display: flex;
+  justify-content: space-between;
+}
+
+input[type="text"] {
+  width: 85%;
+  padding: 1rem 0 1rem 1rem;
+  background-color: var(--pastelPink);
+  border: 1px solid var(--darkPurple);
+  margin: 10px 0;
+  font-family: "Roboto", sans-serif;
+  font-size: 20px;
+  border-radius: 20px;
+}
+
+input[type="submit"] {
+  width: 10%;
+  padding: 1rem 0;
+  background-color: var(--pastelPink);
+  border: 1px solid var(--darkPurple);
+  margin: 10px 0;
+  font-family: "Roboto", sans-serif;
+  font-size: 20px;
+  border-radius: 50%;
+  color: var(--darkPurple);
+}
+
+.list-container {
+  background-color: var(--pastelPink);
+  width: 100%;
+  border-bottom: 2px solid var(--darkPurple);
+  font-size: 20px;
+  padding: 1rem 0;
+}
+
+input[type="checkbox"]:checked {
+  text-decoration: line-through;
+}
