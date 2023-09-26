@@ -1,4 +1,5 @@
 import express from "express";
+import mongoose from "mongoose";
 
 const app = express();
 const port = 3000;
@@ -7,13 +8,47 @@ const todoArrWork = [];
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
+mongoose.connect("mongodb://127.0.0.1:27017/todoListDB");
+
+const itemsSchema = new mongoose.Schema({
+  name: String,
+});
+const Item = mongoose.model("Item", itemsSchema);
+
+const item1 = new Item({
+  name: "Do coding",
+});
+
+const item2 = new Item({
+  name: "Eat",
+});
+
+const item3 = new Item({
+  name: "Sleep",
+});
+
+const arr = [item1, item2, item3];
+
+// try {
+//   Item.insertMany(arr);
+//   console.log("Insert succesfully");
+// } catch (error) {
+//   console.log(error);
+// }
 
 app.get("/", (req, res) => {
-  res.render("index.ejs", {
-    addTodo: todoArr,
-    today: day[new Date().getDay()],
-    month: month[new Date().getMonth()],
-  });
+  Item.find({})
+    .then(function (foundItems) {
+      console.log(foundItems);
+      res.render("index.ejs", {
+        addTodo: foundItems,
+        today: day[new Date().getDay()],
+        month: month[new Date().getMonth()],
+      });
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
 });
 
 app.get("/work", (req, res) => {

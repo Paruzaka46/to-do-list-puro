@@ -20,7 +20,7 @@
         <% if (locals.addTodo) { %> <% for (var i = 0; i < addTodo.length; i++) { %>
         <div class="list-container">
           <input type="checkbox" id="list-<%= i %>" />
-          <label for="list-<%- i %>"><%= addTodo[i] %></label>
+          <label for="list-<%- i %>"><%= addTodo[i].name %></label>
         </div>
         <% }}; %>
 
