@@ -50,14 +50,23 @@ h1 {
   text-align: center;
 }
 
-.list-container {
+/* .list-container {
   display: flex;
   justify-content: center;
-}
+} */
 
-form.submit {
+/* form.submit {
   display: flex;
   justify-content: space-between;
+} */
+
+form input {
+  margin-left: 2rem;
+}
+
+form label {
+  margin-left: 1rem;
+  color: var(--darkPurple);
 }
 
 input[type="text"] {
@@ -77,6 +86,7 @@ input[type="submit"] {
   background-color: var(--pastelPink);
   border: 1px solid var(--darkPurple);
   margin: 10px 0;
+  margin-left: 25px;
   font-family: "Roboto", sans-serif;
   font-size: 20px;
   border-radius: 50%;
