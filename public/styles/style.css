@@ -55,7 +55,7 @@ h1 {
   justify-content: center;
 }
 
-form {
+form.submit {
   display: flex;
   justify-content: space-between;
 }
@@ -93,4 +93,8 @@ input[type="submit"] {
 
 input[type="checkbox"]:checked {
   text-decoration: line-through;
+}
+
+label {
+  background-color: var(--pastelPink);
 }

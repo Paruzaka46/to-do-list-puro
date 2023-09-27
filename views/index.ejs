@@ -18,13 +18,15 @@
         <h1><%= today %>, <%= month %> <%= new Date().getDate() %></h1>
 
         <% if (locals.addTodo) { %> <% for (var i = 0; i < addTodo.length; i++) { %>
-        <div class="list-container">
-          <input type="checkbox" id="list-<%= i %>" />
-          <label for="list-<%- i %>"><%= addTodo[i].name %></label>
-        </div>
+        <form class="checkbox" action="/delete" method="POST">
+          <div class="list-container">
+            <input type="checkbox" id="list-<%= i %>" value="<%= addTodo[i]._id %>" name="checkbox" onChange="this.form.submit()" />
+            <label for="list-<%- i %>"><%= addTodo[i].name %></label>
+          </div>
+        </form>
         <% }}; %>
 
-        <form action="/" method="POST">
+        <form class="submit" action="/" method="POST">
           <input type="text" placeholder="What would you wanna do..." name="new" />
           <input type="submit" value="+" />
         </form>
