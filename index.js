@@ -1,6 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
-import ejs from "ejs"
+import _ from "lodash";
 
 const app = express();
 const port = 3000;
@@ -21,6 +21,8 @@ const Item = mongoose.model("Item", itemsSchema);
 const Work = mongoose.model("Work", itemsSchema);
 const List = mongoose.model("List", listSchema);
 
+
+//Opening 
 const item1 = new Work({
   name: "Welcome to My Todo List!",
 });
@@ -58,21 +60,8 @@ app.get("/", (req, res) => {
     });
 });
 
-app.get("/work", (req, res) => {
-  Work.find({})
-    .then(function (foundItems) {
-      console.log(foundItems);
-      res.render("work.ejs", {
-        addTodo: foundItems,
-      });
-    })
-    .catch(function (err) {
-      console.log(err);
-    });
-});
-
 app.get("/:customList", (req, res) => {
-  const listName = req.params.customList;
+  const listName = _.capitalize(req.params.customList);
   List.findOne({ name: listName })
     .then((found) => {
       if (found) {
@@ -97,18 +86,7 @@ app.get("/:customList", (req, res) => {
     .catch((err) => {
       console.log(err);
     });
-  // List.find({ name: listName })
-  //   .then((foundItems) => {
-  //     console.log(foundItems.list);
-  //     res.render("index.ejs", {
-  //       listTitle: listName,
-  //       addTodo: foundItems,
-  //     });
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //   });
-});
+  });
 
 app.post("/", (req, res) => {
   const userInput = req.body.new;
@@ -125,35 +103,30 @@ app.post("/", (req, res) => {
 
 app.post("/delete", (req, res) => {
   console.log(req.body.checkbox);
-  Item.deleteOne({ _id: req.body.checkbox })
+  const listName = req.body.listName
+  const idDelete = req.body.checkbox
+
+  if (listName === "Today") {
+    Item.deleteOne({ _id: req.body.checkbox })
     .then(() => {
       console.log("Delete Succesfully");
     })
     .catch((err) => {
       console.log(err);
     });
-  res.redirect("/");
-});
-
-app.post("/work", (req, res) => {
-  const workTodo = req.body.new;
-  const savetoDB = new Work({
-    name: workTodo,
-  });
-  savetoDB.save();
-  res.redirect("/work");
-});
-
-app.post("/deletework", (req, res) => {
-  console.log(req.body.checkbox);
-  Work.deleteOne({ _id: req.body.checkbox })
+    res.redirect("/");
+  } else {
+    List.findOneAndUpdate({name: listName}, {$pull: {list: {_id: idDelete}}})
     .then(() => {
-      console.log("Delete Succesfully");
+      console.log("Delete Succesfully")
+      res.redirect(`/${listName}`);
     })
-    .catch((err) => {
-      console.log(err);
-    });
-  res.redirect("/work");
+    .catch(err => {
+      console.log(err)
+    })
+
+  }
+  
 });
 
 app.post("/:customList", (req, res) => {
@@ -163,15 +136,7 @@ app.post("/:customList", (req, res) => {
   const savetoDB = new Item({
     name: newTodo,
   });
-  
-  // List.find({name: listName})
-  // .then((foundList) => {
-  //   foundList.list.push(savetoDB)
-  //   foundList.save()
-  // })
-  // .catch(err => {
-  //   console.log(err)
-  // })
+
   List.updateOne({ name: listName }, { $push: { list: savetoDB } })
     .then(() => {
       console.log("Insert succesfully");

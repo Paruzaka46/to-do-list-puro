@@ -10,7 +10,7 @@
     <nav>
       <ul>
         <li><a href="/">Today</a></li>
-        <li><a href="/work">Work</a></li>
+        <li><a href="/Work">Work</a></li>
       </ul>
     </nav>
     <div class="container">
@@ -24,6 +24,7 @@
           <div class="list-container">
             <input type="checkbox" id="list-<%= i %>" value="<%= addTodo[i]._id %>" name="checkbox" onChange="this.form.submit()" />
             <label for="list-<%- i %>"><%= addTodo[i].name %></label>
+            <input type="hidden" name="listName" value="<%- listTitle %>">
           </div>
         </form>
         <% }}; %>
