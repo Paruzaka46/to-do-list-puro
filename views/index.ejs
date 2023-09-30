@@ -15,9 +15,11 @@
     </nav>
     <div class="container">
       <div class="wrapper">
+        <% if (!locals.today && !locals.month) { %>
+        <h1><%= listTitle %></h1>
+        <% } else {%>
         <h1><%= today %>, <%= month %> <%= new Date().getDate() %></h1>
-
-        <% if (locals.addTodo) { %> <% for (var i = 0; i < addTodo.length; i++) { %>
+        <% } %> <% if (locals.addTodo) { %> <% for (var i = 0; i < addTodo.length; i++) { %>
         <form class="checkbox" action="/delete" method="POST">
           <div class="list-container">
             <input type="checkbox" id="list-<%= i %>" value="<%= addTodo[i]._id %>" name="checkbox" onChange="this.form.submit()" />

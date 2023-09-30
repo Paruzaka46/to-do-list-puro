@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 
 const app = express();
 const port = 3000;
-const todoArrWork = [];
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
@@ -12,26 +11,31 @@ mongoose.connect("mongodb://127.0.0.1:27017/todoListDB");
 const itemsSchema = new mongoose.Schema({
   name: String,
 });
+const listSchema = new mongoose.Schema({
+  name: String,
+  list: [itemsSchema],
+});
 
 const Item = mongoose.model("Item", itemsSchema);
 const Work = mongoose.model("Work", itemsSchema);
+const List = mongoose.model("List", listSchema);
 
 const item1 = new Work({
-  name: "Do coding",
+  name: "Welcome to My Todo List!",
 });
 
 const item2 = new Work({
-  name: "Eat",
+  name: "Hit the + button add new item.",
 });
 
 const item3 = new Work({
-  name: "Sleep",
+  name: "<--- Hit the checkbox to delete item.",
 });
 
-const arr = [item1, item2, item3];
+const defaultItems = [item1, item2, item3];
 
 // try {
-//   Work.insertMany(arr);
+//   Work.insertMany(defaultItems);
 //   console.log("Insert succesfully");
 // } catch (error) {
 //   console.log(error);
@@ -64,12 +68,47 @@ app.get("/work", (req, res) => {
       console.log(err);
     });
 });
-// res.render("work.ejs", {
-//   addTodoWork: todoArrWork,
-// });;
+
+app.get("/:customList", (req, res) => {
+  const listName = req.params.customList;
+  List.findOne({ name: listName })
+    .then((found) => {
+      if (found) {
+        // Show the exist database
+        console.log(found.list);
+        res.render("index.ejs", {
+          listTitle: found.name,
+          addTodo: found.list,
+        });
+      } else {
+        // Create new database directory
+        console.log("list doesn't exist");
+        const newTodo = new List({
+          name: listName,
+          list: defaultItems,
+        });
+
+        newTodo.save();
+        res.redirect(`/${listName}`);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  // List.find({ name: listName })
+  //   .then((foundItems) => {
+  //     console.log(foundItems.list);
+  //     res.render("index.ejs", {
+  //       listTitle: listName,
+  //       addTodo: foundItems,
+  //     });
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
+});
 
 app.post("/", (req, res) => {
-  // todoArr.push(req.body["new"]);
   const userInput = req.body.new;
   console.log(userInput);
 
@@ -80,12 +119,6 @@ app.post("/", (req, res) => {
   savetoDB.save();
 
   res.redirect("/");
-
-  // res.render("index.ejs", {
-  //   addTodo: foundItems,
-  //   today: day[new Date().getDay()],
-  //   month: month[new Date().getMonth()],
-  // });
 });
 
 app.post("/delete", (req, res) => {
@@ -107,11 +140,6 @@ app.post("/work", (req, res) => {
   });
   savetoDB.save();
   res.redirect("/work");
-  // todoArrWork.push(req.body["new"]);
-  // console.log(todoArrWork);
-  // res.render("work.ejs", {
-  //   addTodoWork: todoArrWork,
-  // });
 });
 
 app.post("/deletework", (req, res) => {
@@ -124,6 +152,19 @@ app.post("/deletework", (req, res) => {
       console.log(err);
     });
   res.redirect("/work");
+});
+
+app.post("/:customList", (req, res) => {
+  const listName = req.params.customList;
+  const newTodo = req.body.new;
+  List.updateOne({ name: listName }, { $push: { list: newTodo } })
+    .then(() => {
+      console.log("Insert succesfully");
+      res.redirect(`/${listName}`);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 app.listen(port, () => {
