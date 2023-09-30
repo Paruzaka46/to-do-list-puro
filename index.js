@@ -1,5 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
+import ejs from "ejs"
 
 const app = express();
 const port = 3000;
@@ -47,6 +48,7 @@ app.get("/", (req, res) => {
       console.log(foundItems);
       res.render("index.ejs", {
         addTodo: foundItems,
+        listTitle: "Today",
         today: day[new Date().getDay()],
         month: month[new Date().getMonth()],
       });
@@ -157,7 +159,20 @@ app.post("/deletework", (req, res) => {
 app.post("/:customList", (req, res) => {
   const listName = req.params.customList;
   const newTodo = req.body.new;
-  List.updateOne({ name: listName }, { $push: { list: newTodo } })
+
+  const savetoDB = new Item({
+    name: newTodo,
+  });
+  
+  // List.find({name: listName})
+  // .then((foundList) => {
+  //   foundList.list.push(savetoDB)
+  //   foundList.save()
+  // })
+  // .catch(err => {
+  //   console.log(err)
+  // })
+  List.updateOne({ name: listName }, { $push: { list: savetoDB } })
     .then(() => {
       console.log("Insert succesfully");
       res.redirect(`/${listName}`);

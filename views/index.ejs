@@ -27,11 +27,18 @@
           </div>
         </form>
         <% }}; %>
-
+        
+        <% if (listTitle === "Today") { %>
         <form class="submit" action="/" method="POST">
           <input type="text" placeholder="What would you wanna do..." name="new" />
-          <input type="submit" value="+" />
+          <input type="submit"value="+" />
         </form>
+        <% } else { %>
+          <form class="submit" action = "/<%= listTitle %>" method="POST">
+            <input type="text" placeholder="What would you wanna do..." name="new" />
+            <input type="submit"value="+" />
+          </form>
+        <% } %>
       </div>
     </div>
   </body>
