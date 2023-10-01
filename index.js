@@ -7,7 +7,8 @@ const port = 3000;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
-mongoose.connect("mongodb://127.0.0.1:27017/todoListDB");
+// mongoose.connect("mongodb://127.0.0.1:27017/todoListDB");
+mongoose.connect("mongodb+srv://admin-ray:Permainan48@cluster0.9wirdq7.mongodb.net/todoListDB");
 
 const itemsSchema = new mongoose.Schema({
   name: String,
@@ -45,15 +46,16 @@ const defaultItems = [item1, item2, item3];
 // }
 
 app.get("/", (req, res) => {
-  Item.find({})
+  Item.find()
     .then(function (foundItems) {
-      console.log(foundItems);
-      res.render("index.ejs", {
-        addTodo: foundItems,
-        listTitle: "Today",
-        today: day[new Date().getDay()],
-        month: month[new Date().getMonth()],
+        console.log(foundItems);
+        res.render("index.ejs", {
+          addTodo: foundItems,
+          listTitle: "Today",
+          today: day[new Date().getDay()],
+          month: month[new Date().getMonth()],
       });
+      
     })
     .catch(function (err) {
       console.log(err);

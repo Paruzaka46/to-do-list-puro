@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My To Do List</title>
     <link rel="stylesheet" href="/styles/style.css" />
+    <link rel="icon" href="data:,">
   </head>
   <body>
     <nav>
@@ -19,15 +20,18 @@
         <h1><%= listTitle %></h1>
         <% } else {%>
         <h1><%= today %>, <%= month %> <%= new Date().getDate() %></h1>
-        <% } %> <% if (locals.addTodo) { %> <% for (var i = 0; i < addTodo.length; i++) { %>
-        <form class="checkbox" action="/delete" method="POST">
-          <div class="list-container">
-            <input type="checkbox" id="list-<%= i %>" value="<%= addTodo[i]._id %>" name="checkbox" onChange="this.form.submit()" />
-            <label for="list-<%- i %>"><%= addTodo[i].name %></label>
-            <input type="hidden" name="listName" value="<%- listTitle %>">
-          </div>
-        </form>
-        <% }}; %>
+        <% } %> 
+        <div class="list-container-wrapper">
+          <% if (locals.addTodo) { %> <% for (var i = 0; i < addTodo.length; i++) { %>
+            <form class="checkbox" action="/delete" method="POST">
+              <div class="list-container">
+                <input type="checkbox" id="list-<%= i %>" value="<%= addTodo[i]._id %>" name="checkbox" onChange="this.form.submit()" />
+                <label for="list-<%- i %>"><%= addTodo[i].name %></label>
+                <input type="hidden" name="listName" value="<%- listTitle %>">
+              </div>
+            </form>
+            <% }}; %>
+        </div>
         
         <% if (listTitle === "Today") { %>
         <form class="submit" action="/" method="POST">

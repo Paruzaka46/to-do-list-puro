@@ -93,6 +93,11 @@ input[type="submit"] {
   color: var(--darkPurple);
 }
 
+.list-container-wrapper {
+  padding: 10px;
+  background-color: var(--pastelPink);
+}
+
 .list-container {
   background-color: var(--pastelPink);
   width: 100%;
