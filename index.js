@@ -167,9 +167,9 @@ connectDB().then(() => {
   })
 })
 
-app.listen(PORT, () => {
-  console.log(`Listening to port ${PORT}`);
-});
+// app.listen(PORT, () => {
+//   console.log(`Listening to port ${PORT}`);
+// });
 
 const day = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
