@@ -1,14 +1,26 @@
+require('dotenv').config()
 import express from "express";
 import mongoose from "mongoose";
 import _ from "lodash";
 
 const app = express();
-const port = 3000;
+const PORT = process.env.PORT || 3000;
+
+mongoose.set('strictQuery', false)
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 // mongoose.connect("mongodb://127.0.0.1:27017/todoListDB");
-mongoose.connect("mongodb+srv://admin-ray:Permainan48@cluster0.9wirdq7.mongodb.net/todoListDB");
+// mongoose.connect("mongodb+srv://admin-ray:Permainan48@cluster0.9wirdq7.mongodb.net/todoListDB");
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.MONGO_URI);
+    console.log(`MongoDB Connected: ${conn.connection.host}`);
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
+}
 
 const itemsSchema = new mongoose.Schema({
   name: String,
@@ -149,8 +161,14 @@ app.post("/:customList", (req, res) => {
     });
 });
 
-app.listen(port, () => {
-  console.log(`Listening to port ${port}`);
+connectDB().then(() => {
+  app.listen(PORT, () => {
+      console.log("listening for requests");
+  })
+})
+
+app.listen(PORT, () => {
+  console.log(`Listening to port ${PORT}`);
 });
 
 const day = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
